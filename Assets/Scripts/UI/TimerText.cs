@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TimerText : MonoBehaviour
 {
     private readonly string defaultText = "Time Left: ";
+    
     [SerializeField] private Text textValue;
-
     [SerializeField] LevelTimer levelTimer;
 
     private void Awake()
@@ -22,14 +22,16 @@ public class TimerText : MonoBehaviour
     }
     public void UpdateText()
     {
+        float tmp = levelTimer.GetTimeLeft();
+        string result = tmp.ToString();
+        
         try
         {
-            string tmp = levelTimer.GetTimeLeft().ToString();
-            textValue.text = defaultText + tmp.Substring(0, (tmp.Length > 4) ? 4 : tmp.Length) + " sec";
+            textValue.text = defaultText + result.Substring(0, result.Length > 4 ? ((tmp > 100) ? 6 : 4) : result.Length) + " sec";
         }
         catch (ArgumentOutOfRangeException e)
         {
-            Debug.Log("NOO");
+            textValue.text = defaultText + result.Substring(0, result.Length) + " sec";
         }
     }
 }
